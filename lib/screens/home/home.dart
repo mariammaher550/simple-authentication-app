@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:l2/screens/authenticate/register.dart';
 import 'package:l2/services/auth.dart';
+import 'package:l2/services/manage_data.dart';
 class Home extends StatelessWidget {
 final AuthService _auth = AuthService();
-
 
   @override
   Widget build(BuildContext context) {
@@ -32,13 +31,15 @@ final AuthService _auth = AuthService();
               ),
             ),
             SizedBox(height: 20),
-            Text('Email: '+ _auth.getEmail),
+            get_email(),
             SizedBox(height: 20),
-           // Text('Password: ' + _auth.getPassword)
+            //Text('Password' + _auth.getPassword()),
+            get_password()
           ],
         ),
         )
       )
+
     );
   }
 }

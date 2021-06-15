@@ -47,6 +47,7 @@ class _SignInState extends State<SignIn> {
            ),
            SizedBox(height: 20.0),
            TextFormField(
+             obscureText: true,
              decoration: InputDecoration(
                  helperText: 'PASSWORD'
              ),
@@ -64,7 +65,7 @@ class _SignInState extends State<SignIn> {
                if (_formKey.currentState.validate()) {
                  dynamic result = await _auth.signInWithEmailAndPassword(
                      email, password);
-                 if (result == null) {
+                 if (!result) {
                    setState(() {
                      error = 'Could not sign in, wrong email and/or password';
                    });

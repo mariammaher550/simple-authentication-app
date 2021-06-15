@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:l2/models/us.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class AuthService {
- // String pw='';
  final FirebaseAuth _auth = FirebaseAuth.instance;
+ final _firestoreInstance  = FirebaseFirestore.instance;
  Us _userFromFirebaseUser (User user){
    return user != null ? Us(uid : user.uid) : null;
  }
@@ -10,37 +12,29 @@ class AuthService {
  Stream<Us> get user{
    return _auth.authStateChanges().map(_userFromFirebaseUser);
  }
-  Future signInWithEmailAndPassword(String email, String password) async {
+  Future<bool> signInWithEmailAndPassword(String email, String password) async {
     try {
-      UserCredential credential = await _auth.signInWithEmailAndPassword(email: email, password: password);
-      User user = credential.user;
-      return _userFromFirebaseUser(user);
+        await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+      return true;
     } catch (error){
       print(error.toString());
-      return null;
+    //  return null;
+      return false;
     }
   }
- Future registerWithEmailAndPassword(String email, String password) async {
+ Future<bool> registerWithEmailAndPassword(String email, String password) async {
    try {
-     UserCredential credential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-    User user = credential.user;
-     return _userFromFirebaseUser(user);
+    await _auth.createUserWithEmailAndPassword(email: email, password: password);
+ return true;
    } catch (error){
      print(error.toString());
-     return null;
+  //
+     return false;
    }
  }
-String get getEmail{
-   User user = _auth.currentUser;
-   return user.email;
-}
- /*set setPw(String s){
-   print(s);
-   pw = s;
-}*/
- /*String get getPassword{
-   return pw;
- }*/
+
+
  Future signOut() async{
    try {
      return await _auth.signOut();

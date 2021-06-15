@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:l2/services/auth.dart';
+import 'package:l2/services/manage_data.dart';
 class Register extends StatefulWidget {
  final Function toggleView;
  Register({this.toggleView});
@@ -39,7 +40,7 @@ class _RegisterState extends State<Register> {
                   decoration: InputDecoration(
                     helperText: 'EMAIL'
                   ),
-                  validator: (val) => val.isEmpty ? 'Enter an email': null,
+                  validator: (val) => (val.isEmpty || !val.contains('@')) ? 'Invalid Email Format': null,
                   onChanged: (val){
                     setState(() => email = val);
 
@@ -47,10 +48,11 @@ class _RegisterState extends State<Register> {
                 ),
                 SizedBox(height: 20.0),
                 TextFormField(
+                  obscureText: true,
                   decoration: InputDecoration(
                       helperText: 'PASSWORD'
                   ),
-                  validator: (val) => val.length < 6 ? 'Enter password that is 6+ character long'  : null,
+                  validator: (val) => (val.length < 6 || val.contains(' ') || val.isEmpty)  ? 'Invalid Password Format'  : null, // We can add validation conditions we want here
                   onChanged: (val){
                     setState(() => password = val);
                   //  _auth.setPw= password;
@@ -64,12 +66,9 @@ class _RegisterState extends State<Register> {
                   onPressed: () async{
                     if(_formKey.currentState.validate()){
                       dynamic result = await _auth.registerWithEmailAndPassword(email, password);
-                      if (result == null){
-                        setState(() {
-                          error = 'please supply a valid email';
-                        });
-                      }
                     }
+                    add_data(email, password);
+
                   },
                 ),
                 SizedBox(height: 12.0),
