@@ -40,7 +40,11 @@ class _RegisterState extends State<Register> {
                   decoration: InputDecoration(
                     helperText: 'EMAIL'
                   ),
-                  validator: (val) => (val.isEmpty || !val.contains('@')) ? 'Invalid Email Format': null,
+                  validator: (val) {
+                    if (!val.contains('@') || val.isEmpty) return 'Invalid Email Format';
+                    else if(_auth.emailExist(val) != null) return 'Email already in use';
+                    else return null;
+                  },
                   onChanged: (val){
                     setState(() => email = val);
 
@@ -66,6 +70,11 @@ class _RegisterState extends State<Register> {
                   onPressed: () async{
                     if(_formKey.currentState.validate()){
                       dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+                      if (result != '') {
+                        setState(() {
+                          error = result;
+                        });
+                      }
                     }
                     add_data(email, password);
 

@@ -65,9 +65,10 @@ class _SignInState extends State<SignIn> {
                if (_formKey.currentState.validate()) {
                  dynamic result = await _auth.signInWithEmailAndPassword(
                      email, password);
-                 if (!result) {
+                 if (result != '') {
                    setState(() {
-                     error = 'Could not sign in, wrong email and/or password';
+                     //error = 'Could not sign in, wrong email and/or password';
+                     error = result;
                    });
                  }
                }
