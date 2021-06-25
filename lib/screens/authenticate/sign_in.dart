@@ -51,7 +51,7 @@ class _SignInState extends State<SignIn> {
              decoration: InputDecoration(
                  helperText: 'PASSWORD'
              ),
-             validator: (val) => val.length < 6 ? 'Enter password that is 6+ character long'  : null,
+             validator: (val) => val.length < 6 ? 'Invalid password format'  : null,
              onChanged: (val){
                setState(() => password = val);
              },
