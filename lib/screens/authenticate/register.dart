@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:l2/services/auth.dart';
 import 'package:l2/services/manage_data.dart';
+
+/**
+ * get all emails once the register page is launched
+ * put emails in hashmap
+ * when input new email
+ * check if val exists in that hashmap
+ */
 class Register extends StatefulWidget {
  final Function toggleView;
  Register({this.toggleView});
@@ -42,12 +49,11 @@ class _RegisterState extends State<Register> {
                   ),
                   validator: (val) {
                     if (!val.contains('@') || val.isEmpty) return 'Invalid Email Format';
-                    else if(_auth.emailExist(val) != null) return 'Email already in use';
+                    else if(email_exists(val)) return 'Email already in use';
                     else return null;
                   },
                   onChanged: (val){
                     setState(() => email = val);
-
                   },
                 ),
                 SizedBox(height: 20.0),
@@ -89,6 +95,10 @@ class _RegisterState extends State<Register> {
             )
         ),
       ),
-    );;
+    );
   }
+
+
 }
+
+

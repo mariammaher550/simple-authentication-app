@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:l2/models/us.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+List<String> emails= List();
 Future<void> add_data(String email, String password) async {
+  emails.add(email);
   DocumentReference ref = FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser.uid);
   ref.set({'Email' : email, 'Password': password});
   return;
@@ -58,4 +59,9 @@ class get_email extends StatelessWidget{
         }
     );
   }
+}
+bool email_exists(String email){
+  print("HERE");
+  print('LENGTH IS '+ emails.length.toString());
+  return emails.contains(email);
 }

@@ -37,9 +37,6 @@ class AuthService {
           email: email, password: password);
       return '';
     } catch (error) {
-      if (error.code == 'email-already-in-use')
-        return 'Email is already Taken';
-      else
         return error.code.toString();
     }
   }
@@ -53,13 +50,6 @@ class AuthService {
       print(e.toString());
       return null;
     }
-  }
-
-  Future<bool> emailExist(String val) async {
-    CollectionReference ref = _firestoreInstance.collection('Users');
-    QuerySnapshot snapshot = await ref.where('Email', isEqualTo: val).get();
-    List query = snapshot.docs;
-   return query.isNotEmpty ? true : null;
   }
 }
 
